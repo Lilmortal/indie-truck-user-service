@@ -18,8 +18,7 @@
             "es2015",
             "es2016",
             "es2017.object",
-            "es2017.string",
-            "dom"
+            "es2017.string"
         ]
     },
     "include": [
