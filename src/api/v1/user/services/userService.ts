@@ -25,7 +25,7 @@ router.delete("/:id", () => {
 });
 
 // Add friend
-router.post("/:id/friend/:friendId", (req: Request) => {
+router.patch("/:id/friend/:friendId", (req: Request) => {
     const friendId = req.params.friendId;
     if (typeof friendId === "number") {
         console.log(req.params.id + " add " + friendId);
