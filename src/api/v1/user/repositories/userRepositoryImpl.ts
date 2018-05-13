@@ -5,26 +5,22 @@ import { User } from "../models";
 
 interface UserRepositoryImplParams {
     connectionString: string;
-    connectionPort: string;
+    connectionPort: number;
     dbName: string;
+    collection: string;
     username: string;
     password: string;
 }
 
-const COLLECTION = "users";
-
-const errorHandling = (err: MongoError) => { if (err) { throw err; } };
-
-const UserRepositoryImpl = async ({ connectionString, connectionPort, dbName, username, password }: UserRepositoryImplParams): Promise<UserRepository> => {
+const UserRepositoryImpl = async ({ connectionString, connectionPort, dbName, collection, username, password }: UserRepositoryImplParams): Promise<UserRepository> => {
     const client = await MongoClient.connect(`mongodb://${username}:${password}@${connectionString}:${connectionPort}`);
     const db = client.db(dbName);
 
     return {
-        get: (user: User) => {
-            const retrievedUser: User = db.collection(COLLECTION).find(user).toArray()[0];
-            return retrievedUser;
-        },
-        update: (user: User, updatedUser: User) => db.collection(COLLECTION).updateOne(user, updatedUser, errorHandling),
-        delete: (user: User) => db.collection(COLLECTION).deleteOne(user),
+        get: (user: User) => db.collection(collection).find(user).toArray(),
+        update: (user: User, updatedUser: User) => db.collection(collection).updateOne(user, updatedUser),
+        delete: (user: User) => db.collection(collection).deleteOne(user),
     };
 };
+
+export default UserRepositoryImpl;
